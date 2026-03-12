@@ -1,0 +1,17 @@
+#!/bin/bash
+# services hash: {{ .services | toJson | sha256sum }}
+set -euo pipefail
+
+{{ if .services.system -}}
+echo "Enabling system services..."
+{{   range .services.system -}}
+sudo systemctl enable --now {{ . | quote }}
+{{   end -}}
+{{ end -}}
+
+{{ if .services.user -}}
+echo "Enabling user services..."
+{{   range .services.user -}}
+systemctl --user enable --now {{ . | quote }}
+{{   end -}}
+{{ end -}}

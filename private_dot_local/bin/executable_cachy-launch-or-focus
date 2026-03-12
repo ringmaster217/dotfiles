@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Launch or focus on a given command identified by the passed in window-pattern.
+# Use by some default bindings, like the one for Spotify, to ensure there is only one instance of the application open.
+
+if (($# == 0)); then
+  echo "Usage: cachy-launch-or-focus [window-pattern] [launch-command]"
+  exit 1
+fi
+
+WINDOW_PATTERN="$1"
+LAUNCH_COMMAND="${2:-"uwsm-app -- $WINDOW_PATTERN"}"
+
+TREE=$(swaymsg -t get_tree)
+
+if [[ -n ${CACHY_DEBUG:-} ]]; then
+  echo "=== cachy-launch-or-focus debug ===" >&2
+  echo "WINDOW_PATTERN: $WINDOW_PATTERN" >&2
+  echo "LAUNCH_COMMAND: $LAUNCH_COMMAND" >&2
+  echo "--- All leaf containers ---" >&2
+  echo "$TREE" | jq -r 'recurse(.nodes[]?, .floating_nodes[]?) | select(.type? == "con" or .type? == "floating_con") | "id=\(.id) app_id=\(.app_id // "null") class=\(.window_properties?.class // "null") name=\(.name // "null")"' >&2
+  echo "---" >&2
+fi
+
+CON_ID=$(echo "$TREE" | jq -r --arg p "$WINDOW_PATTERN" \
+  'recurse(.nodes[]?, .floating_nodes[]?) |
+   select(.type? == "con" or .type? == "floating_con") |
+   select((.app_id? // "" | ascii_downcase | . == ($p | ascii_downcase)) or
+          (.app_id? // "" | test("\\b" + $p + "\\b";"i")) or
+          (.window_properties?.class? // "" | test("\\b" + $p + "\\b";"i")) or
+          (.name? // "" | test("\\b" + $p + "\\b";"i"))) |
+   .id' | head -n1)
+
+if [[ -n ${CACHY_DEBUG:-} ]]; then
+  echo "CON_ID: ${CON_ID:-<empty>}" >&2
+fi
+
+if [[ -n $CON_ID ]]; then
+  swaymsg "[con_id=$CON_ID] focus"
+else
+  eval exec setsid $LAUNCH_COMMAND
+fi

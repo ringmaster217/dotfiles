@@ -1,0 +1,27 @@
+#!/bin/bash
+# packages hash: {{ .packages | toJson | sha256sum }}
+set -euo pipefail
+
+pacman_packages=(
+{{- range .packages.pacman }}
+  {{ . | quote }}
+{{- end }}
+)
+
+if [[ ${#pacman_packages[@]} -gt 0 ]]; then
+    echo "Installing/syncing pacman packages..."
+    sudo pacman -S --needed --noconfirm "${pacman_packages[@]}"
+fi
+
+{{ if .packages.aur -}}
+aur_packages=(
+{{- range .packages.aur }}
+  {{ . | quote }}
+{{- end }}
+)
+
+if [[ ${#aur_packages[@]} -gt 0 ]]; then
+    echo "Installing/syncing AUR packages..."
+    paru -S --needed --noconfirm "${aur_packages[@]}"
+fi
+{{ end -}}

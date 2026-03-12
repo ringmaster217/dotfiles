@@ -1,0 +1,20 @@
+packages:
+  pacman:
+    - swayfx
+    - alacritty
+    - wmenu
+    - swayosd
+    - grim
+    - swayidle
+    - swaylock
+    - bluetui
+    - impala
+    - uwsm
+    - rofi
+    - wiremix
+  aur: []
+
+services:
+  system:
+    - swayosd-libinput-backend
+  user: []

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Launch the Cachy audio controls TUI (provided by wiremix).
+
+cachy-launch-or-focus-tui wiremix

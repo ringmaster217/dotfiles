@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Set the desktop wallpaper from ~/.config/backgrounds using swaybg.
+#
+# Usage:
+#   cachy-wallpaper --random   Pick a random background (used at login)
+#   cachy-wallpaper --next     Cycle to the next background alphabetically
+
+BACKGROUNDS_DIR="${HOME}/.config/backgrounds"
+STATE_FILE="${HOME}/.local/state/cachy-wallpaper"
+
+# Collect image files sorted alphabetically.
+mapfile -t images < <(find "$BACKGROUNDS_DIR" -maxdepth 1 -type f \
+    \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \
+       -o -iname '*.webp' -o -iname '*.gif' \) | sort)
+
+count=${#images[@]}
+
+if (( count == 0 )); then
+    echo "cachy-wallpaper: no images found in $BACKGROUNDS_DIR" >&2
+    exit 0
+fi
+
+# Determine the new index.
+case "${1:-}" in
+    --random)
+        index=$(( RANDOM % count ))
+        ;;
+    --next|*)
+        if [[ -f "$STATE_FILE" ]]; then
+            current=$(< "$STATE_FILE")
+        else
+            current=-1
+        fi
+        index=$(( (current + 1) % count ))
+        ;;
+esac
+
+# Persist the current index so cycling continues from the right place.
+mkdir -p "$(dirname "$STATE_FILE")"
+echo "$index" > "$STATE_FILE"
+
+image="${images[$index]}"
+
+# Replace any running swaybg instance.
+pkill -x swaybg 2>/dev/null || true
+
+# Launch the new instance detached from this script.
+swaybg -i "$image" -m fill &
+disown
