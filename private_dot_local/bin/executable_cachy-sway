@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Modify the PATH here
+export PATH="$HOME/.local/bin:$PATH"
+
+# Add any other Sway-specific environment variables here
+# export MOZ_ENABLE_WAYLAND=1
+
+# Execute sway and replace the shell process
+exec sway "$@"

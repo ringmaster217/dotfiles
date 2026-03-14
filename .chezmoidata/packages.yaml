@@ -12,6 +12,12 @@ packages:
     - uwsm
     - rofi
     - wiremix
+    - satty
+    - grim
+    - slurp
+    - wl-clipboard
+    - fprintd
+    - swaylock-effects
   aur: []
 
 services:
