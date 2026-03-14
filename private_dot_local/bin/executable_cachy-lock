@@ -1,0 +1,46 @@
+#!/bin/bash
+
+# Lock the screen using swaylock-effects with the current desktop wallpaper
+# blurred as the background. The current wallpaper is determined by reading
+# the same state file written by cachy-wallpaper.
+
+BACKGROUNDS_DIR="${HOME}/.config/backgrounds"
+STATE_FILE="${HOME}/.local/state/cachy-wallpaper"
+
+# Build the same sorted image list that cachy-wallpaper uses.
+mapfile -t images < <(find "$BACKGROUNDS_DIR" -maxdepth 1 -type f \
+    \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' \
+       -o -iname '*.webp' -o -iname '*.gif' \) | sort)
+
+count=${#images[@]}
+
+if (( count == 0 )); then
+    # No wallpaper found — fall back to a plain dark lock screen.
+    exec swaylock --daemonize --color 1a1a2e
+fi
+
+# Read current index; default to 0 if missing.
+if [[ -f "$STATE_FILE" ]]; then
+    index=$(< "$STATE_FILE")
+else
+    index=0
+fi
+
+# Clamp to valid range in case the backgrounds directory changed.
+if (( index < 0 || index >= count )); then
+    index=0
+fi
+
+image="${images[$index]}"
+
+exec swaylock \
+    --daemonize \
+    --image "$image" \
+    --effect-blur 20x3 \
+    --effect-vignette 0.3:0.8 \
+    --show-failed-attempts \
+    --indicator \
+    --indicator-radius 100 \
+    --indicator-thickness 7 \
+    --grace 2 \
+    --clock

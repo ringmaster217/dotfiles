@@ -6,7 +6,6 @@ packages:
     - swayosd
     - grim
     - swayidle
-    - swaylock
     - bluetui
     - impala
     - uwsm
