@@ -16,7 +16,10 @@ packages:
     - slurp
     - wl-clipboard
     - fprintd
-    - swaylock-effects
+    - hyprlock
+    - ttf-jetbrains-mono-nerd
+    - remmina
+    - freerdp
   aur: []
 
 services:

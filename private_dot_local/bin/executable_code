@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Passthrough to the VSCode binary at ~/apps/VSCode-linux-x64
+exec "$HOME/apps/VSCode-linux-x64/code" "$@"
