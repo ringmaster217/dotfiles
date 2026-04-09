@@ -20,6 +20,7 @@ packages:
     - ttf-jetbrains-mono-nerd
     - remmina
     - freerdp
+    - go
   aur: []
 
 services:

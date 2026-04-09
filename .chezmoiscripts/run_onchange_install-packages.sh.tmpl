@@ -10,7 +10,7 @@ pacman_packages=(
 
 if [[ ${#pacman_packages[@]} -gt 0 ]]; then
     echo "Installing/syncing pacman packages..."
-    sudo pacman -S --needed --noconfirm "${pacman_packages[@]}"
+    sudo pacman -Syu --needed --noconfirm "${pacman_packages[@]}"
 fi
 
 {{ if .packages.aur -}}
@@ -22,6 +22,6 @@ aur_packages=(
 
 if [[ ${#aur_packages[@]} -gt 0 ]]; then
     echo "Installing/syncing AUR packages..."
-    paru -S --needed --noconfirm "${aur_packages[@]}"
+    paru -Syu --needed --noconfirm "${aur_packages[@]}"
 fi
 {{ end -}}

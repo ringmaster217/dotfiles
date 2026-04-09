@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# Launch the passed in URL as a web app in the helium browser.
+
+exec setsid uwsm-app -- helium-browser --app="$1" "${@:2}"
