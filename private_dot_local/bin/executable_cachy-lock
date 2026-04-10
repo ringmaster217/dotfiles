@@ -36,3 +36,8 @@ fi
 # hyprlock does not daemonize itself, so background it so that swayidle's
 # before-sleep hook can return and allow the system to suspend.
 hyprlock &
+
+# Give hyprlock a moment to render its lock surface, then turn the display
+# back on so the lock screen (not the previous desktop) is what the user sees.
+sleep 0.5
+swaymsg "output * dpms on"

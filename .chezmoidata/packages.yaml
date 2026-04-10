@@ -21,6 +21,7 @@ packages:
     - remmina
     - freerdp
     - go
+    - pritunl-client-electron
   aur: []
 
 services:
