@@ -1,0 +1,16 @@
+#!/bin/bash
+# roles hash: {{ .roles | toJson | sha256sum }}
+set -euo pipefail
+
+{{ if .roles -}}
+echo "Adding {{ .chezmoi.username }} to groups..."
+{{   range .roles -}}
+if getent group {{ . | quote }} > /dev/null 2>&1; then
+    sudo usermod -aG {{ . | quote }} {{ .chezmoi.username | quote }}
+    echo "  Added to group: {{ . }}"
+else
+    echo "  Skipping missing group: {{ . }}"
+fi
+{{   end -}}
+echo "Done. You may need to log out and back in for group changes to take effect."
+{{ end -}}

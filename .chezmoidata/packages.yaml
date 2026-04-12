@@ -22,9 +22,19 @@ packages:
     - freerdp
     - go
     - pritunl-client-electron
+    - dbeaver
+    - docker
   aur: []
 
 services:
   system:
     - swayosd-libinput-backend
+    - docker.socket
   user: []
+
+roles:
+  - docker
+  - video
+  - audio
+  - input
+  - seat

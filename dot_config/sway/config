@@ -12,7 +12,7 @@ set $right l
 # Your preferred terminal emulator
 set $term footclient
 # Your preferred application launcher
-set $menu rofi -show drun
+set $menu rofi -show drun -theme $HOME/.config/rofi/theme.rasi
 
 ### Includes
 include /etc/sway/config.d/*
