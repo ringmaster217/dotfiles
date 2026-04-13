@@ -24,12 +24,20 @@ packages:
     - pritunl-client-electron
     - dbeaver
     - docker
+    - foot
+    - sddm
+    - xorg-xwayland
+    - waybar
+    - helium-browser-bin
+    - nwg-displays
   aur: []
 
 services:
   system:
     - swayosd-libinput-backend
     - docker.socket
+    - sddm
+    - iwd
   user: []
 
 roles:

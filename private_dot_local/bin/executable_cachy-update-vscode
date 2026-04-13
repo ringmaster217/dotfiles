@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Install or update Visual Studio Code to ~/apps/VSCode-linux-x64.
+#
+# Downloads the latest stable VS Code tarball from Microsoft and extracts it
+# into place, replacing any existing installation.
+#
+# Usage:
+#   cachy-update-vscode
+
+set -euo pipefail
+
+INSTALL_DIR="${HOME}/apps/VSCode-linux-x64"
+DOWNLOAD_URL="https://update.code.visualstudio.com/latest/linux-x64/stable"
+TMP_DIR="$(mktemp -d)"
+
+cleanup() {
+    rm -rf "$TMP_DIR"
+}
+trap cleanup EXIT
+
+# Determine whether we are installing or updating.
+if [[ -x "${INSTALL_DIR}/code" ]]; then
+    action="Updating"
+else
+    echo "VS Code is not yet installed."
+    action="Installing"
+fi
+
+echo "${action} VS Code from ${DOWNLOAD_URL} ..."
+
+TARBALL="${TMP_DIR}/vscode.tar.gz"
+curl --location --fail --progress-bar --output "$TARBALL" "$DOWNLOAD_URL"
+
+echo "Extracting ..."
+mkdir -p "${HOME}/apps"
+# Extract into a staging directory inside TMP_DIR first, then move into place.
+STAGING="${TMP_DIR}/extract"
+mkdir -p "$STAGING"
+tar -xzf "$TARBALL" -C "$STAGING"
+
+# The tarball contains a single top-level directory; find it.
+EXTRACTED_DIR="$(find "$STAGING" -mindepth 1 -maxdepth 1 -type d | head -n1)"
+if [[ -z "$EXTRACTED_DIR" ]]; then
+    echo "cachy-update-vscode: failed to find extracted directory" >&2
+    exit 1
+fi
+
+# Replace the existing installation atomically.
+if [[ -d "$INSTALL_DIR" ]]; then
+    rm -rf "$INSTALL_DIR"
+fi
+mv "$EXTRACTED_DIR" "$INSTALL_DIR"
+
+echo "Done."
