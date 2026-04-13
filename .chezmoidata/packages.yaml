@@ -40,6 +40,12 @@ services:
     - iwd
   user: []
 
+disabled_services:
+  system:
+    - NetworkManager
+    - wpa_supplicant
+  user: []
+
 roles:
   - docker
   - video

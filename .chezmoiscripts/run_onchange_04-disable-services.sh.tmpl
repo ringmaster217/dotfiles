@@ -1,0 +1,17 @@
+#!/bin/bash
+# disabled_services hash: {{ .disabled_services | toJson | sha256sum }}
+set -euo pipefail
+
+{{ if .disabled_services.system -}}
+echo "Disabling system services..."
+{{   range .disabled_services.system -}}
+sudo systemctl disable --now {{ . | quote }}
+{{   end -}}
+{{ end -}}
+
+{{ if .disabled_services.user -}}
+echo "Disabling user services..."
+{{   range .disabled_services.user -}}
+systemctl --user disable --now {{ . | quote }}
+{{   end -}}
+{{ end -}}
