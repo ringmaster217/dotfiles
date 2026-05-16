@@ -30,6 +30,11 @@ packages:
     - waybar
     - helium-browser-bin
     - nwg-displays
+    - swaybg
+    - xdg-desktop-portal-wlr
+    - xdg-desktop-portal
+    - buf
+    - swaync
   aur: []
 
 services:

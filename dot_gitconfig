@@ -1,0 +1,9 @@
+[user]
+        email = ringmaster217@gmail.com
+        name = Ben Welker
+[url "ssh://git@github.com/"]
+        insteadOf = https://github.com/
+[core]
+        editor = vim
+[init]
+	defaultBranch = main
