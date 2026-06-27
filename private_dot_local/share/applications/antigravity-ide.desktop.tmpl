@@ -1,0 +1,19 @@
+[Desktop Entry]
+Name=Antigravity IDE
+Comment=Antigravity Code Editing
+GenericName=Text Editor
+Exec={{ .chezmoi.homeDir }}/apps/antigravity-ide/antigravity-ide %F
+Type=Application
+StartupNotify=false
+StartupWMClass=antigravity-ide
+Icon={{ .chezmoi.homeDir }}/apps/antigravity-ide/resources/app/resources/linux/code.png
+Categories=TextEditor;Development;IDE;
+MimeType=text/plain;inode/directory;
+Keywords=antigravity;ide;
+
+Actions=new-empty-window;
+
+[Desktop Action new-empty-window]
+Name=New Empty Window
+Exec={{ .chezmoi.homeDir }}/apps/antigravity-ide/antigravity-ide --new-window %F
+Icon={{ .chezmoi.homeDir }}/apps/antigravity-ide/resources/app/resources/linux/code.png

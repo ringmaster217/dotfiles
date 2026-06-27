@@ -35,6 +35,10 @@ packages:
     - xdg-desktop-portal
     - buf
     - swaync
+    - npm
+    - mission-center
+    - dolphin
+    - kubectl
   aur: []
 
 services:
@@ -46,9 +50,9 @@ services:
   user: []
 
 disabled_services:
-  system:
-    - NetworkManager
-    - wpa_supplicant
+  system: []
+#    - NetworkManager
+#    - wpa_supplicant
   user: []
 
 roles:
