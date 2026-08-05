@@ -5,6 +5,10 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
+# ble.sh: Bash Line Editor (syntax highlighting, autosuggestions, etc.)
+# Sourced early with --noattach; ble-attach is called at the end of this file.
+[[ -f /usr/share/blesh/ble.sh ]] && source /usr/share/blesh/ble.sh --noattach
+
 # export PATH="$HOME/.local/bin:$PATH"
 
 alias ls='ls --color=auto'
@@ -12,3 +16,8 @@ alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
 
 alias ll='ls --color=auto -alh'
+
+# ble.sh: attach to the session now that the rest of .bashrc has loaded
+[[ ! ${BLE_VERSION-} ]] || ble-attach
+
+export GOPRIVATE=weavelab.xyz/*

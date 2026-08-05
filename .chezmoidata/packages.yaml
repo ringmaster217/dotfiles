@@ -24,7 +24,6 @@ packages:
     - pritunl-client-electron
     - dbeaver
     - docker
-    - foot
     - sddm
     - xorg-xwayland
     - waybar
@@ -35,11 +34,13 @@ packages:
     - xdg-desktop-portal
     - buf
     - swaync
+    - libnotify
     - npm
     - mission-center
     - dolphin
     - kubectl
-  aur: []
+  aur:
+    - blesh
 
 services:
   system:

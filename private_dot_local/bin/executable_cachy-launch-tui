@@ -2,4 +2,4 @@
 
 # Launch the TUI command passed in as an argument in the default terminal with an org.cachy.COMMAND app id for styling.
 
-exec setsid uwsm-app -- foot --app-id=org.cachy.$(basename $1) -e "$1" "${@:2}"
+exec setsid uwsm-app -- alacritty --class org.cachy.$(basename $1) -e "$1" "${@:2}"

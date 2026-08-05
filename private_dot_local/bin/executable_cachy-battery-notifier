@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Battery notification and auto-suspend daemon for Sway/Wayland desktop environments.
+# Monitors battery sysfs nodes and issues warnings at 20%, 10%, and auto-suspends at 3%.
+
+NOTIFIED_WARNING=false
+NOTIFIED_CRITICAL=false
+NOTIFIED_EMERGENCY=false
+
+get_battery_path() {
+    for bat in /sys/class/power_supply/BAT*; do
+        if [[ -d "$bat" ]]; then
+            echo "$bat"
+            return 0
+        fi
+    done
+    return 1
+}
+
+BAT_PATH=$(get_battery_path)
+
+if [[ -z "$BAT_PATH" ]]; then
+    echo "No battery found under /sys/class/power_supply/BAT*" >&2
+    exit 1
+fi
+
+while true; do
+    if [[ -f "$BAT_PATH/capacity" && -f "$BAT_PATH/status" ]]; then
+        capacity=$(< "$BAT_PATH/capacity")
+        status=$(< "$BAT_PATH/status")
+
+        if [[ "$status" == "Discharging" ]]; then
+            if (( capacity <= 3 )) && [[ "$NOTIFIED_EMERGENCY" == false ]]; then
+                notify-send -u critical -i battery-empty "Battery Emergency" "Battery level is at ${capacity}%. Suspending system..."
+                NOTIFIED_EMERGENCY=true
+                sleep 2
+                systemctl suspend
+            elif (( capacity <= 10 )) && [[ "$NOTIFIED_CRITICAL" == false ]]; then
+                notify-send -u critical -i battery-caution "Battery Critical" "Battery level is at ${capacity}%. Please plug in your charger immediately!"
+                NOTIFIED_CRITICAL=true
+            elif (( capacity <= 20 )) && [[ "$NOTIFIED_WARNING" == false ]]; then
+                notify-send -u normal -i battery-low "Battery Low" "Battery level is at ${capacity}%. Please connect to AC power."
+                NOTIFIED_WARNING=true
+            fi
+        else
+            # Reset flags when plugged in / charging / full
+            NOTIFIED_WARNING=false
+            NOTIFIED_CRITICAL=false
+            NOTIFIED_EMERGENCY=false
+        fi
+    fi
+
+    sleep 30
+done
