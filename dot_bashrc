@@ -21,3 +21,10 @@ alias ll='ls --color=auto -alh'
 [[ ! ${BLE_VERSION-} ]] || ble-attach
 
 export GOPRIVATE=weavelab.xyz/*
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/benwelker/google-cloud-sdk/path.bash.inc' ]; then . '/home/benwelker/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/benwelker/google-cloud-sdk/completion.bash.inc' ]; then . '/home/benwelker/google-cloud-sdk/completion.bash.inc'; fi
+
+export PATH="$PATH:$HOME/.bun/bin:$HOME/go/bin:$HOME/.local/bin"

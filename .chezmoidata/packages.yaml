@@ -39,6 +39,8 @@ packages:
     - mission-center
     - dolphin
     - kubectl
+    - netcat
+    - bun
   aur:
     - blesh
 
