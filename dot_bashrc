@@ -27,4 +27,4 @@ if [ -f '/home/benwelker/google-cloud-sdk/path.bash.inc' ]; then . '/home/benwel
 # The next line enables shell command completion for gcloud.
 if [ -f '/home/benwelker/google-cloud-sdk/completion.bash.inc' ]; then . '/home/benwelker/google-cloud-sdk/completion.bash.inc'; fi
 
-export PATH="$PATH:$HOME/.bun/bin:$HOME/go/bin:$HOME/.local/bin"
+export PATH="$PATH:$HOME/.bun/bin:$HOME/.local/bin:$HOME/go/bin"
