@@ -11,6 +11,12 @@
 
 # export PATH="$HOME/.local/bin:$PATH"
 
+# History configuration: save indefinitely
+export HISTSIZE=-1
+export HISTFILESIZE=-1
+shopt -s histappend
+PROMPT_COMMAND="history -a${PROMPT_COMMAND:+; $PROMPT_COMMAND}"
+
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 PS1='[\u@\h \W]\$ '
