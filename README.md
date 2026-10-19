@@ -16,15 +16,17 @@ through a login shell, so `~/.bashrc` never runs).
 
 This is configured automatically during `chezmoi apply` via
 `.chezmoiscripts/run_onchange_after_configure-sway-session.sh`, which:
-1. Creates a persistent override at `/usr/local/share/wayland-sessions/sway.desktop`
-   pointing `Exec` to `cachy-sway` (SDDM reads `/usr/local/share` before `/usr/share`,
+
+1. Installs `cachy-sway` to `/usr/local/bin/cachy-sway` so it is accessible to all users.
+2. Creates a persistent override at `/usr/local/share/wayland-sessions/sway.desktop`
+   pointing `Exec` to `/usr/local/bin/cachy-sway` (SDDM reads `/usr/local/share` before `/usr/share`,
    and `pacman` never touches `/usr/local`).
-2. Installs a pacman hook at `/etc/pacman.d/hooks/sway-cachy.hook` so that even if
+3. Installs a pacman hook at `/etc/pacman.d/hooks/sway-cachy.hook` so that even if
    `/usr/share/wayland-sessions/sway.desktop` is updated by a package upgrade (`pacman -Syu`),
    it gets re-patched automatically.
 
 ### fingerprint reader
 
 ```bash
-sudo fprintd-enroll benwelker
+sudo fprintd-enroll "$USER"
 ```

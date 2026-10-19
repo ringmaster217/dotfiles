@@ -6,12 +6,16 @@ if [[ -n "${SUDO_USER:-}" && "$USER_HOME" == "/root" ]]; then
     USER_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
 fi
 
-CACHY_SWAY="${USER_HOME}/.local/bin/cachy-sway"
+USER_CACHY_SWAY="${USER_HOME}/.local/bin/cachy-sway"
+CACHY_SWAY=/usr/local/bin/cachy-sway
 LOCAL_WAYLAND_SESSIONS_DIR=/usr/local/share/wayland-sessions
 SWAY_LOCAL_DESKTOP="$LOCAL_WAYLAND_SESSIONS_DIR/sway.desktop"
 SWAY_SYS_DESKTOP=/usr/share/wayland-sessions/sway.desktop
 PACMAN_HOOKS_DIR=/etc/pacman.d/hooks
 PACMAN_HOOK="$PACMAN_HOOKS_DIR/sway-cachy.hook"
+
+# 0. Install cachy-sway into /usr/local/bin so the session entry works for all users.
+sudo install -Dm755 "$USER_CACHY_SWAY" "$CACHY_SWAY"
 
 # 1. Create a persistent desktop entry in /usr/local/share/wayland-sessions/
 # Pacman never touches /usr/local, so SDDM will use this without pacman overwriting it.
